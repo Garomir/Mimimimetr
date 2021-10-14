@@ -13,9 +13,6 @@ import java.util.List;
 @Controller
 public class CatController {
 
-    //String str = "\\imgs\\";
-    Path path = Path.of("\\imgs\\").toAbsolutePath();
-
     private CatService catService;
 
     //Инжектим CatService

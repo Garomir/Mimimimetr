@@ -15,11 +15,15 @@
             <thead>
             <tr>
                 <th scope="col">Name</th>
+                <th scope="col">Image</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="cat : ${cats}">
                 <td th:text="${cat.name}"/>
+                <td>
+                    <img th:src="@{'imgs/' + ${cat.name} + '.jpg'}" alt="" width="400" />
+                </td>
             </tr>
             </tbody>
         </table>
