@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface CatService {
     List<Cat> findAllCats();
+    //List<Cat> findTop10Cats();
 }
