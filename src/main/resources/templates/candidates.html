@@ -22,7 +22,7 @@
             <tr th:each="cat : ${cats}">
                 <td th:text="${cat.name}"/>
                 <td>
-                    <img th:src="@{'imgs/' + ${cat.name} + '.jpg'}" alt="" width="400" />
+                    <img th:src="@{'imgs/' + ${cat.name} + '.jpg'}" alt="" width="300" />
                 </td>
             </tr>
             </tbody>
