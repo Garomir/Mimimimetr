@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface CatService {
     List<Cat> findAllCats();
-    //List<Cat> findTop10Cats();
+    Cat findById(int id);
+    void saveCat(Cat cat);
 }

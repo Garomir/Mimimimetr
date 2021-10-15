@@ -21,4 +21,14 @@ public class CatServiceImpl implements CatService{
     public List<Cat> findAllCats() {
         return catRepo.findAll();
     }
+
+    @Override
+    public Cat findById(int id) {
+        return catRepo.getById(id);
+    }
+
+    @Override
+    public void saveCat(Cat cat) {
+        catRepo.save(cat);
+    }
 }
