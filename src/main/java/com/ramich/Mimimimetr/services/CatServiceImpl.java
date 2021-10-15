@@ -4,7 +4,6 @@ import com.ramich.Mimimimetr.entities.Cat;
 import com.ramich.Mimimimetr.repos.CatRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -43,7 +42,6 @@ public class CatServiceImpl implements CatService{
     public List<Cat[]> getRandomPairs() {
         List<Cat[]> catPairs = new ArrayList<>();
         List<Cat> cats = catRepo.findAll();
-
         for (int j = 0; j < cats.size(); j++) {
             for (int i = j+1; i < cats.size(); i++){
                 catPairs.add(new Cat[]{cats.get(j), cats.get(i)});

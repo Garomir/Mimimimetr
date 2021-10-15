@@ -1,7 +1,6 @@
 package com.ramich.Mimimimetr.controllers;
 
 import com.ramich.Mimimimetr.entities.Cat;
-import com.ramich.Mimimimetr.entities.PairCat;
 import com.ramich.Mimimimetr.services.CatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,14 +10,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 public class CatController {
 
     private CatService catService;
+    List<Cat[]> cats = new ArrayList<>();
+    boolean isStart = true;
 
     //Инжектим CatService
     @Autowired
@@ -48,9 +47,22 @@ public class CatController {
 
     @GetMapping("/voting")
     public String votingPage(Model model){
-        List<Cat> cats = catService.findAllCats();
-        model.addAttribute("cats", cats);
-        return "voting";
+        if (cats.isEmpty() || isStart){
+            cats = getPairs();
+        }
+        model.addAttribute("cat1", cats.get(0)[0]);
+        model.addAttribute("cat2", cats.get(0)[1]);
+        isStart = false;
+        cats.remove(0);
+        if (cats.isEmpty()){
+            return "redirect:/top10";
+        } else {
+            return "voting";
+        }
+    }
+
+    public List<Cat[]> getPairs(){
+        return catService.getRandomPairs();
     }
 
     @PostMapping("/voting/{catId}")
@@ -59,20 +71,5 @@ public class CatController {
         cat.setLikes(cat.getLikes() + 1);
         catService.saveCat(cat);
         return "redirect:/voting";
-    }
-
-    public List<PairCat<Cat, Cat>> getPairCats(List<Cat> cats){
-        List<PairCat<Cat, Cat>> pairCats = new ArrayList<>();
-        for (int i = 1; i <= cats.size(); i++){
-            for (int j = i + 1; j <= cats.size()-1; j++){
-                pairCats.add(new PairCat<>(cats.get(i), cats.get(j)));
-            }
-        }
-        return pairCats;
-    }
-
-    @GetMapping("/test")
-    public void pairs(){
-        catService.getRandomPairs();
     }
 }

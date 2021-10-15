@@ -9,30 +9,51 @@
 <body>
     <header th:insert="blocks/header :: header"></header>
 
-    <div class="container mt-5">
-        <h3>Нажимай на котиков</h3>
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Image</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="cat : ${cats}">
-                <td th:text="${cat.name}"/>
-                <td>
-                    <form th:action="@{'/voting/' + ${cat.id}}" method="post">
-                        <a href="#" onclick="parentNode.submit();">
-                            <img th:src="@{'imgs/' + ${cat.name} + '.jpg'}" alt="" width="150" />
-                        </a>
-                        <input type="hidden" name="img" />
-                    </form>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+    <h3 align="center">Выбери котика</h3>
+
+    <table class="table" align="center">
+        <thead>
+        <tr align="center">
+            <th scope="col" th:text="${cat1.name}" align="center"/>
+            <th scope="col" th:text="${cat2.name}" align="center"/>
+        </tr>
+        </thead>
+        <tbody>
+        <tr align="center">
+            <td align="center">
+                <form th:action="@{'/voting/' + ${cat1.id}}" th:object="${cat1}" method="post">
+                    <a href="#" onclick="parentNode.submit();">
+                        <img th:src="@{'imgs/' + ${cat1.name} + '.jpg'}" alt="" width="300" />
+                    </a>
+                    <input type="hidden" name="img" />
+                </form>
+            </td>
+            <td align="center">
+                <form th:action="@{'/voting/' + ${cat2.id}}" th:object="${cat2}" method="post">
+                    <a href="#" onclick="parentNode.submit();">
+                        <img th:src="@{'imgs/' + ${cat2.name} + '.jpg'}" alt="" width="300" />
+                    </a>
+                    <input type="hidden" name="img" />
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!--<div class="container mt-5">
+        <form th:action="@{'/voting/' + ${cat1.id}}" th:object="${cat1}" method="post">
+            <a href="#" onclick="parentNode.submit();">
+                <img th:src="@{'imgs/' + ${cat1.name} + '.jpg'}" alt="" width="300" />
+            </a>
+            <input type="hidden" name="img" />
+        </form>
+        <form th:action="@{'/voting/' + ${cat2.id}}" th:object="${cat2}" method="post">
+            <a href="#" onclick="parentNode.submit();">
+                <img th:src="@{'imgs/' + ${cat2.name} + '.jpg'}" alt="" width="300" />
+            </a>
+            <input type="hidden" name="img" />
+        </form>
+    </div>-->
 
     <div th:insert="blocks/footer :: footer"></div>
 </body>
