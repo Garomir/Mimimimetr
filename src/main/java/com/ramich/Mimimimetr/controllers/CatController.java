@@ -1,6 +1,7 @@
 package com.ramich.Mimimimetr.controllers;
 
 import com.ramich.Mimimimetr.entities.Cat;
+import com.ramich.Mimimimetr.entities.PairCat;
 import com.ramich.Mimimimetr.services.CatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,15 +38,9 @@ public class CatController {
         return "candidates";
     }
 
-    //выбираем топ-10 котиков по лайкам
     @GetMapping("/top10")
     public String top10Page(Model model){
-        List<Cat> cats = catService.findAllCats();
-
-        List<Cat> top10 = cats.stream()
-                .sorted(Comparator.comparingInt(Cat::getLikes).reversed())
-                .limit(10)
-                .collect(Collectors.toList());
+        List<Cat> top10 = catService.findTop10ByOrderByLikesDesc();
 
         model.addAttribute("top10", top10);
         return "top10";
@@ -63,5 +59,20 @@ public class CatController {
         cat.setLikes(cat.getLikes() + 1);
         catService.saveCat(cat);
         return "redirect:/voting";
+    }
+
+    public List<PairCat<Cat, Cat>> getPairCats(List<Cat> cats){
+        List<PairCat<Cat, Cat>> pairCats = new ArrayList<>();
+        for (int i = 1; i <= cats.size(); i++){
+            for (int j = i + 1; j <= cats.size()-1; j++){
+                pairCats.add(new PairCat<>(cats.get(i), cats.get(j)));
+            }
+        }
+        return pairCats;
+    }
+
+    @GetMapping("/test")
+    public void pairs(){
+        catService.getRandomPairs();
     }
 }
