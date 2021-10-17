@@ -43,10 +43,4 @@ public class UserController {
         userService.saveUser(user);
         return "redirect:/login";
     }
-
-    @GetMapping("/adminpanel")
-    public String adminPage(Model model){
-        model.addAttribute("users", userService.findAll());
-        return "adminpanel";
-    }
 }

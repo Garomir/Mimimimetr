@@ -1,12 +1,12 @@
 package com.ramich.Mimimimetr.controllers;
 
 import com.ramich.Mimimimetr.entities.Cat;
+import com.ramich.Mimimimetr.entities.User;
 import com.ramich.Mimimimetr.services.CatService;
 import com.ramich.Mimimimetr.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,10 +18,15 @@ import java.util.List;
 @Controller
 public class CatController {
 
+    private UserService userService;
     private CatService catService;
-
-    List<Cat[]> cats = new ArrayList<>();
     boolean isStart = true;
+    List<Cat[]> cats = null;
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     @Autowired
     public void setCatService(CatService catService) {
@@ -48,7 +53,13 @@ public class CatController {
 
     @GetMapping("/voting")
     public String votingPage(Model model, Principal principal){
-        if (cats.isEmpty() || isStart){
+        User user = userService.findByUsername(principal.getName());
+        if (user.isVoted()){
+            System.out.println("Вы уже голосовали!");
+            return "redirect:/top10";
+        }
+        if (isStart){
+            cats = user.getCats();
             cats = getPairs();
         }
         model.addAttribute("cat1", cats.get(0)[0]);
@@ -57,6 +68,8 @@ public class CatController {
         isStart = false;
         cats.remove(0);
         if (cats.isEmpty()){
+            user.setVoted(true);
+            userService.saveUser(user);
             return "redirect:/top10";
         } else {
             return "voting";

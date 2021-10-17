@@ -1,6 +1,8 @@
 package com.ramich.Mimimimetr.entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -14,6 +16,10 @@ public class User {
     private String username;
     @Column(name = "password")
     private String password;
+    @Column(name = "voted")
+    private boolean voted;
+    @Transient
+    private List<Cat[]> cats;
 
     @ManyToMany
     @JoinTable(name = "users_roles",
@@ -51,6 +57,22 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public boolean isVoted() {
+        return voted;
+    }
+
+    public void setVoted(boolean voted) {
+        this.voted = voted;
+    }
+
+    public List<Cat[]> getCats() {
+        return cats = new ArrayList<>();
+    }
+
+    public void setCats(List<Cat[]> cats) {
+        this.cats = cats;
     }
 }
 
