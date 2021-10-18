@@ -54,4 +54,10 @@ public class UserServiceImpl implements UserService{
     public List<User> findAll() {
         return userRepo.findAll();
     }
+
+    @Override
+    public void updateUser(User user) {
+        User some = findByUsername(user.getUsername());
+        userRepo.save(user);
+    }
 }

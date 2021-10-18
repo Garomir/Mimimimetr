@@ -76,7 +76,7 @@ public class CatController {
         cats.remove(0);
         if (cats.size() == 0){
             user.setVoted(true);
-            userService.saveUser(user);
+            userService.updateUser(user);
             return "redirect:/top10";
         } else {
             return "voting";

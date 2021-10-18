@@ -28,15 +28,4 @@ public class VoteServiceImpl implements VoteService{
     public void addVote(Vote vote) {
         voteRepo.save(vote);
     }
-
-    @Override
-    public void updateVote(int voteId, Vote vote) {
-        voteRepo.getById(voteId);
-    }
-
-    @Override
-    public List<Vote> findAllVotes() {
-        return voteRepo.findAll();
-    }
-
 }
