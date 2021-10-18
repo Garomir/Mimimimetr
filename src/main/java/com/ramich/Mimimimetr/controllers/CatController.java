@@ -62,7 +62,7 @@ public class CatController {
     public String votingPage(Model model, Principal principal){
         User user = userService.findByUsername(principal.getName());
         if (user.isVoted()){
-            System.out.println("Вы уже голосовали!");
+            model.addAttribute("msg", "Вы уже голосовали");
             return "redirect:/top10";
         }
         if (isStart){
