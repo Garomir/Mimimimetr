@@ -5,7 +5,6 @@ import com.ramich.Mimimimetr.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -30,17 +29,11 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public String register(User user, BindingResult result){
-        User existing = userService.findByUsername(user.getUsername());
-        if (existing != null){
-            result.rejectValue("username", null, "Пользователь с таким именем уже есть");
-        }
-
-        if (result.hasErrors()){
+    public String register(Model model, User user){
+        if(!userService.saveUser(user)){
+            model.addAttribute("falseReg", "User already exists");
             return "registration";
         }
-
-        userService.saveUser(user);
         return "redirect:/login";
     }
 }
