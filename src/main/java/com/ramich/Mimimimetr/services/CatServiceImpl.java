@@ -2,16 +2,27 @@ package com.ramich.Mimimimetr.services;
 
 import com.ramich.Mimimimetr.entities.Cat;
 import com.ramich.Mimimimetr.repos.CatRepo;
+import com.ramich.Mimimimetr.repos.VoteRepo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CatServiceImpl implements CatService{
 
     private CatRepo catRepo;
+    private VoteRepo voteRepo;
+
+    @Autowired
+    public void setVoteRepo(VoteRepo voteRepo) {
+        this.voteRepo = voteRepo;
+    }
 
     @Autowired
     public void setCatRepo(CatRepo catRepo) {
@@ -24,8 +35,15 @@ public class CatServiceImpl implements CatService{
     }
 
     @Override
-    public List<Cat> findTop10ByOrderByLikesDesc() {
-        return catRepo.findTop10ByOrderByLikesDesc();
+    public List<Integer> findTop10ByOrderByLikesDesc() {
+        List<Cat> cats = catRepo.findAll();
+        List<Integer> result = new ArrayList<>();
+        for (Cat cat : cats) {
+            result.add(voteRepo.findSumLikesByCatId(cat.getId()));
+        }
+        // надо отсортировать result 
+
+        return result;
     }
 
     @Override

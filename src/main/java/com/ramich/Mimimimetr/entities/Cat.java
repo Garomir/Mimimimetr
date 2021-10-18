@@ -11,8 +11,6 @@ public class Cat {
     private int id;
     @Column(name = "name")
     private String name;
-    @Column(name = "likes")
-    private int likes;
 
     public int getId() {
         return id;
@@ -28,13 +26,5 @@ public class Cat {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getLikes() {
-        return likes;
-    }
-
-    public void setLikes(int likes) {
-        this.likes = likes;
     }
 }

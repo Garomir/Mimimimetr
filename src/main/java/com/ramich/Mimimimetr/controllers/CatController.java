@@ -80,7 +80,8 @@ public class CatController {
     }
 
     @PostMapping("/voting/{catId}")
-    public String votingPairCat(@PathVariable("catId") int catId){
+    public String votingPairCat(@PathVariable("catId") int catId, Principal principal){
+        //тут тоже надо переделать
         Cat cat = catService.findById(catId);
         cat.setLikes(cat.getLikes() + 1);
         catService.saveCat(cat);
