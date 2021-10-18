@@ -20,12 +20,12 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="cat : ${top10}">
-                <td>
+            <tr th:each="mapEntry : ${top10}">
+                <td th:each="cat : ${mapEntry.key}">
                     <img th:src="@{'imgs/' + ${cat.name} + '.jpg'}" alt="" width="150" />
                 </td>
-                <td th:text="${cat.name}"/>
-                <td th:text="${cat.likes}"/>
+                <td th:each="cat : ${mapEntry.key}" th:text="${cat.name}"/>
+                <td th:text="${mapEntry.value}"/>
             </tr>
             </tbody>
         </table>

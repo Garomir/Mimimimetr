@@ -1,17 +1,15 @@
 package com.ramich.Mimimimetr.services;
 
 import com.ramich.Mimimimetr.entities.Cat;
+import com.ramich.Mimimimetr.entities.Vote;
 import com.ramich.Mimimimetr.repos.CatRepo;
 import com.ramich.Mimimimetr.repos.VoteRepo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CatServiceImpl implements CatService{
@@ -35,15 +33,24 @@ public class CatServiceImpl implements CatService{
     }
 
     @Override
-    public List<Integer> findTop10ByOrderByLikesDesc() {
+    public Map<Cat, Integer> findTop10Cats() {
         List<Cat> cats = catRepo.findAll();
-        List<Integer> result = new ArrayList<>();
+        List<Vote> votes = voteRepo.findAll();
+        Map<Cat, Integer> result = new LinkedHashMap<>();
         for (Cat cat : cats) {
-            result.add(voteRepo.findSumLikesByCatId(cat.getId()));
+            int catLikes = 0;
+            for (Vote vote : votes) {
+                if (vote.getCatId() == cat.getId()){
+                    catLikes = catLikes + vote.getLikes();
+                }
+            }
+            result.put(cat, catLikes);
         }
-        // надо отсортировать result 
-
-        return result;
+        // надо отсортировать result
+        return result.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
     }
 
     @Override

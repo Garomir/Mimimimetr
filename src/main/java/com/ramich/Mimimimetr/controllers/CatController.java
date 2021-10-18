@@ -2,8 +2,10 @@ package com.ramich.Mimimimetr.controllers;
 
 import com.ramich.Mimimimetr.entities.Cat;
 import com.ramich.Mimimimetr.entities.User;
+import com.ramich.Mimimimetr.entities.Vote;
 import com.ramich.Mimimimetr.services.CatService;
 import com.ramich.Mimimimetr.services.UserService;
+import com.ramich.Mimimimetr.services.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,14 +15,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class CatController {
 
+    private VoteService voteService;
     private UserService userService;
     private CatService catService;
     boolean isStart = true;
     List<Cat[]> cats = null;
+
+    @Autowired
+    public void setVoteService(VoteService voteService) {
+        this.voteService = voteService;
+    }
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -43,8 +52,7 @@ public class CatController {
 
     @GetMapping("/top10")
     public String top10Page(Model model, Principal principal){
-        List<Cat> top10 = catService.findTop10ByOrderByLikesDesc();
-
+        Map<Cat, Integer> top10 = catService.findTop10Cats();
         model.addAttribute("top10", top10);
         model.addAttribute("username", principal.getName());
         return "top10";
@@ -66,7 +74,7 @@ public class CatController {
         model.addAttribute("username", principal.getName());
         isStart = false;
         cats.remove(0);
-        if (cats.isEmpty()){
+        if (cats.size() == 0){
             user.setVoted(true);
             userService.saveUser(user);
             return "redirect:/top10";
@@ -82,9 +90,19 @@ public class CatController {
     @PostMapping("/voting/{catId}")
     public String votingPairCat(@PathVariable("catId") int catId, Principal principal){
         //тут тоже надо переделать
-        Cat cat = catService.findById(catId);
-        cat.setLikes(cat.getLikes() + 1);
-        catService.saveCat(cat);
+
+        //Cat cat = catService.findById(catId);
+        Vote vote = voteService.findVoteByUsernameAndCatId(principal.getName(), catId);
+        if (vote != null){
+            vote.setLikes(vote.getLikes() + 1);
+            voteService.addVote(vote);
+        } else {
+            Vote vote1 = new Vote();
+            vote1.setUsername(principal.getName());
+            vote1.setCatId(catId);
+            vote1.setLikes(1);
+            voteService.addVote(vote1);
+        }
         return "redirect:/voting";
     }
 }

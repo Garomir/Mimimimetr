@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface CatRepo extends JpaRepository<Cat, Integer> {
-    List<Cat> findTop10ByOrderByLikesDesc();
+    //List<Cat> findTop10Cats();
 }

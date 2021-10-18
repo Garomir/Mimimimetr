@@ -6,6 +6,8 @@ import com.ramich.Mimimimetr.repos.VoteRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class VoteServiceImpl implements VoteService{
 
@@ -26,5 +28,15 @@ public class VoteServiceImpl implements VoteService{
     public void addVote(Vote vote) {
         voteRepo.save(vote);
     }
-    
+
+    @Override
+    public void updateVote(int voteId, Vote vote) {
+        voteRepo.getById(voteId);
+    }
+
+    @Override
+    public List<Vote> findAllVotes() {
+        return voteRepo.findAll();
+    }
+
 }
