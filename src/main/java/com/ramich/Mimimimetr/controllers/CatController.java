@@ -52,6 +52,10 @@ public class CatController {
 
     @GetMapping("/top10")
     public String top10Page(Model model, Principal principal){
+        User user = userService.findByUsername(principal.getName());
+        if (user.isVoted()){
+            model.addAttribute("msg", "Вы уже голосовали");
+        }
         Map<Cat, Integer> top10 = catService.findTop10Cats();
         model.addAttribute("top10", top10);
         model.addAttribute("username", principal.getName());
@@ -62,7 +66,6 @@ public class CatController {
     public String votingPage(Model model, Principal principal){
         User user = userService.findByUsername(principal.getName());
         if (user.isVoted()){
-            model.addAttribute("msg", "Вы уже голосовали");
             return "redirect:/top10";
         }
         if (isStart){
