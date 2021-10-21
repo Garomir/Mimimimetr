@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CatServiceImplTest {
@@ -48,7 +49,7 @@ public class CatServiceImplTest {
 
     @Test
     public void findById() {
-        Mockito.when(catRepo.getById(Mockito.any())).thenReturn(cats.get(1));
+        Mockito.when(catRepo.getById(Mockito.any())).thenReturn(new Cat(1, "test"));
         Cat cat = catService.findById(1);
         Mockito.verify(catRepo).getById(1);
     }

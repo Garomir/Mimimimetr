@@ -1,6 +1,7 @@
 package com.ramich.Mimimimetr.entities;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "cats")
@@ -34,5 +35,19 @@ public class Cat {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cat cat = (Cat) o;
+        return id == cat.id &&
+                name.equals(cat.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 }
