@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class CatServiceImplTest {
 
-    List<Cat> cats = null;
+    private List<Cat> cats = null;
 
     @Mock
     private CatRepo catRepo;
@@ -44,10 +44,6 @@ public class CatServiceImplTest {
     }
 
     @Test
-    public void findTop10Cats() {
-    }
-
-    @Test
     public void findById() {
         Mockito.when(catRepo.getById(Mockito.any())).thenReturn(new Cat(1, "test"));
         Cat cat = catService.findById(1);
@@ -56,6 +52,9 @@ public class CatServiceImplTest {
 
     @Test
     public void saveCat() {
+        when(catRepo.save(any())).thenReturn(new Cat(1, "test"));
+        catService.saveCat(new Cat(1, "test"));
+        verify(catRepo).save(any());
     }
 
     @Test
