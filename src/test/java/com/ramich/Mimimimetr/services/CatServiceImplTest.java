@@ -56,8 +56,4 @@ public class CatServiceImplTest {
         catService.saveCat(new Cat(1, "test"));
         verify(catRepo).save(any());
     }
-
-    @Test
-    public void getRandomPairs() {
-    }
 }

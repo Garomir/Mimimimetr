@@ -7,4 +7,5 @@ import java.util.List;
 public interface VoteService {
     Vote findVoteByUsernameAndCatId(String username, int catId);
     void addVote(Vote vote);
+    void deleteAllVotes();
 }

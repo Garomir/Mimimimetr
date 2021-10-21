@@ -92,9 +92,6 @@ public class CatController {
 
     @PostMapping("/voting/{catId}")
     public String votingPairCat(@PathVariable("catId") int catId, Principal principal){
-        //тут тоже надо переделать
-
-        //Cat cat = catService.findById(catId);
         Vote vote = voteService.findVoteByUsernameAndCatId(principal.getName(), catId);
         if (vote != null){
             vote.setLikes(vote.getLikes() + 1);
@@ -107,5 +104,11 @@ public class CatController {
             voteService.addVote(vote1);
         }
         return "redirect:/voting";
+    }
+
+    @GetMapping("/delete-all")
+    public String deleteAllVotes(){
+        voteService.deleteAllVotes();
+        return "top10";
     }
 }

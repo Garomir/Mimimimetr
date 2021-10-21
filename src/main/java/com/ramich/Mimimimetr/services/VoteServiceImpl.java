@@ -21,11 +21,15 @@ public class VoteServiceImpl implements VoteService{
     @Override
     public Vote findVoteByUsernameAndCatId(String username, int catId) {
         return voteRepo.findByUsernameAndCatId(username, catId);
-    
     }
 
     @Override
     public void addVote(Vote vote) {
         voteRepo.save(vote);
+    }
+
+    @Override
+    public void deleteAllVotes() {
+        voteRepo.deleteAll();
     }
 }

@@ -9,7 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface VoteRepo extends JpaRepository<Vote, Integer> {
-    /*@Query(value = "select sum(likes) from votes where cat_id = :catId",nativeQuery = true)
-    int findSumLikesByCatId(@Param("catId")int catId);*/
     Vote findByUsernameAndCatId(String username, int catId);
 }
